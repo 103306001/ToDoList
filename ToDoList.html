@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>To Do List</title>
+  <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="../toDoList.css" />
+  <!-- firebase firestore setting -->
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-firestore.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDnpEBn8T__rGGcx5FeG0AL4ZZ3EJPDxc4",
+      authDomain: "todolist-23938.firebaseapp.com",
+      databaseURL: "https://todolist-23938.firebaseio.com",
+      projectId: "todolist-23938",
+      storageBucket: "todolist-23938.appspot.com",
+      messagingSenderId: "949676231986"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- datetimepicker-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+  <!-- sweetalert2-->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
+  <script type="text/javascript" src="../dbConnect.js"></script>
+
+</head>
+<body>
+  <!-- 新增待辦事項 Modal -->
+  <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLongTitle">新增待辦事項</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+              <label for="matter">代辦事項：</label>
+              <input type="text" class="form-control" id="matter"  required="required"/>
+            </div>
+            <div class="form-group">
+              <label for="datetimepicker">時間：</label>
+            <input type="date" class="form-control datetimepicker-input" id="datetimepicker" data-toggle="datetimepicker" data-target="#datetimepicker" required/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id = "confirm" class="btn btn-primary">確認</button>
+        </div>    
+      </div>
+    </div>
+  </div>
+  <!-- ====================================================================================   -->
+  <div style="text-align:center;"><h1 id = "title">To Do List</h1>
+    <div class="button-group" role="group" aria-label="...">
+        <button type="button" class="fancy-btn" data-toggle="modal" data-target="#ModalCenter">
+         新增代辦事項</button>
+        <button class="fancy-btn" id = "mattersToDo"> 未完成事項</button>
+        <button class="fancy-btn" id = "mattersFinish">已完成事項</button>
+        <button class="fancy-btn" id = "mattersFinishDel">清除已完成事項</button>
+    </div>
+      
+    <div class = "toDoTable">
+        <table width="100%" class="table table-dark" id="dataTables-example">
+              <thead>
+                  <tr>
+                      <th><i class="fas fa-arrow-circle-down"></i>按這裡確認</th>
+                      <th>事件</th>
+                      <th>開始時間</th>
+                      <th>修改</th>
+                      <th>刪除</th>
+                  </tr>
+              </thead>
+              <tbody class ="list"></tbody>
+        </table>
+    </div>
+  </div>
+</body>
+</html>
